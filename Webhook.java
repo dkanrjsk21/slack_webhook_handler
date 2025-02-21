@@ -3,7 +3,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class Webhook {
+public class Solution02 {
     public static void main(String[] args) {
         String prompt = System.getenv("LLM_PROMPT");
 
@@ -22,10 +22,10 @@ public class Webhook {
                 .split("\",")[0];
 
         System.out.println("result = " + result);
-        SendSlackMessage(content, result);
+        SendSlackMessage(prompt, content, result);
     }
 
-    public static void SendSlackMessage(String text, String imageUrl){
+    public static void SendSlackMessage(String prompt,String text, String imageUrl){
         String slackUrl = System.getenv("SLACK_WEBHOOK_URL");
 
         ///  slack webhook attachments
@@ -33,10 +33,11 @@ public class Webhook {
         HttpClient client = HttpClient.newHttpClient(); /// 새로운 클라이언트, like 브라우저, 유저
         String payload = """
                     {"attachments": [{
+                        "title": "%s",
                         "text": "%s",
                         "image_url": "%s"
                     }]}
-                """.formatted(text, imageUrl);
+                """.formatted(prompt, text, imageUrl);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(slackUrl))              /// URI 임 url 아님
