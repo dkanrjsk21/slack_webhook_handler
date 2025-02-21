@@ -8,7 +8,7 @@ public class Webhook {
         String prompt = System.getenv("LLM_PROMPT");
 
 //        String prompt = "서양 용, 동양 용의 차이";
-        String response = useLLM(prompt);
+        String response = useLLM(prompt + "대답은 한글로 해줘.");
 
         int messageStart = response.indexOf("\"message\":{");
         int contentStart = response.indexOf("\"content\":\"", messageStart) + 11;
